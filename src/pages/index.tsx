@@ -29,7 +29,7 @@ export default function Home(
 }
 
 export const getStaticProps = async () => {
-  const { list: items } = await fetchContent<List>(process.env.CONTENT_URL!)
+  const { list: items } = await fetchContent<List>(process.env.LIST_URL!)
   const { yml: config } = await fetchContent<Config>(process.env.CONFIG_URL!)
   return {
     props: {
