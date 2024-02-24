@@ -1,0 +1,8 @@
+{
+  "name": "3ds",
+  "short_name": "3ds",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "standalone",
+  "scope": "/"
+}
