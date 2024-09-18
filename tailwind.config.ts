@@ -1,10 +1,7 @@
 import { type Config } from 'tailwindcss'
 
 export default {
-  content: [
-    './src/**/*.tsx',
-    './node_modules/@bacondotbuild/ui/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.tsx'],
   theme: {
     extend: {
       colors: {
