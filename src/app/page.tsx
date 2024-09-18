@@ -1,6 +1,6 @@
 import { unstable_noStore as noStore } from 'next/cache'
 
-import { Main, Title } from '@/components/ui'
+import { Main } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
 import { HydrateClient } from '@/trpc/server'
 
@@ -62,7 +62,6 @@ export default async function Home() {
     <HydrateClient>
       <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
         <div className='flex flex-grow flex-col'>
-          <Title>3ds</Title>
           <GamesList games={games} />
         </div>
       </Main>

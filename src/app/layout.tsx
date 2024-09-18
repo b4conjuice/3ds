@@ -2,6 +2,7 @@ import type { Viewport } from 'next'
 import { TRPCReactProvider } from '@/trpc/react'
 
 import '@/styles/globals.css'
+import TopNav from './_components/topNav'
 
 const DEFAULT_TITLE = '3ds'
 
@@ -29,7 +30,8 @@ export default function RootLayout({
     <html lang='en'>
       <TRPCReactProvider>
         <body>
-          <div className='bg-cb-dark-blue text-cb-white flex min-h-screen flex-col'>
+          <div className='flex min-h-screen flex-col bg-cb-dark-blue text-cb-white'>
+            <TopNav />
             {children}
           </div>
         </body>
