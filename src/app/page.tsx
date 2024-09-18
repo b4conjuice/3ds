@@ -1,3 +1,5 @@
+import { unstable_noStore as noStore } from 'next/cache'
+
 import { Main, Title } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
 import { HydrateClient } from '@/trpc/server'
@@ -15,6 +17,7 @@ async function fetchContent<T>(url: string) {
 }
 
 export default async function Home() {
+  noStore()
   const { list: items } = await fetchContent<List>(process.env.LIST_URL!)
   const { yml: config } = await fetchContent<Config>(process.env.CONFIG_URL!)
   const games = items.map(item => {
