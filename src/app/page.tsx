@@ -4,41 +4,66 @@ import { Main, Title } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
 import { HydrateClient } from '@/trpc/server'
 
-type List = {
-  list: string[]
-}
-
-type Config = {
-  yml: Record<string, { system: string }>
+type Systems = {
+  yml: Record<
+    string,
+    {
+      games: string[]
+    }
+  >
 }
 
 async function fetchContent<T>(url: string) {
   return await fetcher<T>(url)
 }
 
+type Game = {
+  id: string
+  name: string
+  system: string
+}
+
+function GamesList({ games }: { games: Game[] }) {
+  return (
+    <ul className='divide-y divide-cb-dusty-blue'>
+      {games.map(game => (
+        <li key={game.id} className='flex items-center py-4 first:pt-0'>
+          <span className='flex grow gap-3'>
+            <span>
+              {game.name} - {game.system}
+            </span>
+            {/* <SignedIn>
+              <ToggleFavoritesButton game={game.id} />
+            </SignedIn> */}
+          </span>
+          {/* <Link>
+            write note
+          </Link> */}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export default async function Home() {
   noStore()
-  const { list: items } = await fetchContent<List>(process.env.LIST_URL!)
-  const { yml: config } = await fetchContent<Config>(process.env.CONFIG_URL!)
-  const games = items.map(item => {
-    const system = config[item]?.system ?? ''
-    return {
-      name: item,
-      system,
-    }
-  })
+  const { yml: systems } = await fetchContent<Systems>(process.env.SYSTEMS_URL!)
+  const systemEntries = Object.entries(systems)
+  const games = systemEntries.reduce((prev, system) => {
+    const [systemName, systemInfo] = system
+    const systemGames = systemInfo.games.map(game => ({
+      id: `${game}-${systemName}`,
+      name: game,
+      system: systemName,
+    }))
+    return [...prev, ...systemGames]
+  }, [] as Game[])
   return (
     <HydrateClient>
-      <Main className='flex flex-col p-4'>
-        <div className='flex flex-grow flex-col items-center justify-center space-y-4'>
+      <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
+        <div className='flex flex-grow flex-col'>
           <Title>3ds</Title>
-          <ul className='space-y-4'>
-            {games.map(game => (
-              <li key={game.name}>
-                {game.name} - {game.system}
-              </li>
-            ))}
-          </ul>
+          <GamesList games={games} />
         </div>
       </Main>
     </HydrateClient>
