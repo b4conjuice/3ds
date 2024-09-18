@@ -1,4 +1,4 @@
-// import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/20/solid'
+import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/20/solid'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { auth, clerkClient } from '@clerk/nextjs/server'
 
@@ -14,8 +14,7 @@ export default async function TopNav() {
       <div className='flex flex-grow justify-end'>
         <SignedOut>
           <SignInButton>
-            {/* <ArrowRightStartOnRectangleIcon className='h-6 w-6 hover:cursor-pointer' /> */}
-            login
+            <ArrowRightStartOnRectangleIcon className='h-6 w-6 hover:cursor-pointer' />
           </SignInButton>
         </SignedOut>
         <SignedIn>
