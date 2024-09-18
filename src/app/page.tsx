@@ -1,8 +1,11 @@
 import { unstable_noStore as noStore } from 'next/cache'
+import { SignedIn } from '@clerk/nextjs'
 
 import { Main } from '@/components/ui'
 import fetcher from '@/lib/fetcher'
 import { HydrateClient } from '@/trpc/server'
+import ToggleFavoritesButton from './_components/toggleFavoritesButton'
+import { getFavorites } from '@/server/actions'
 
 type Systems = {
   yml: Record<
@@ -23,18 +26,23 @@ type Game = {
   system: string
 }
 
-function GamesList({ games }: { games: Game[] }) {
+async function GamesList({ games }: { games: Game[] }) {
+  const favorites = await getFavorites()
+  const favoriteGames = favorites
+    .map(id => games.find(game => game.id === id))
+    .filter(game => game !== undefined)
+  const otherGames = games.filter(game => !favorites.includes(game.id))
   return (
     <ul className='divide-y divide-cb-dusty-blue'>
-      {games.map(game => (
+      {[...(favoriteGames ?? []), ...(otherGames ?? [])].map(game => (
         <li key={game.id} className='flex items-center py-4 first:pt-0'>
           <span className='flex grow gap-3'>
             <span>
               {game.name} - {game.system}
             </span>
-            {/* <SignedIn>
-              <ToggleFavoritesButton game={game.id} />
-            </SignedIn> */}
+            <SignedIn>
+              <ToggleFavoritesButton id={game.id} />
+            </SignedIn>
           </span>
           {/* <Link>
             write note
