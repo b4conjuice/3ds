@@ -61,10 +61,11 @@ async function GamesList({ games }: { games: Game[] }) {
   return (
     <ul className='divide-y divide-cb-dusty-blue'>
       {[...(favoriteGames ?? []), ...(otherGames ?? [])].map(game => (
-        <li key={game.id} className='flex items-center py-4 first:pt-0'>
-          <span className='grow'>
-            {game.name} - {game.system}
-          </span>
+        <li key={game.id} className='flex items-center gap-4 py-4 first:pt-0'>
+          <div className='grow'>
+            <div className='text-cb-white/50'>{game.system}</div>
+            {game.name}
+          </div>
           <span className='flex gap-3'>
             <SignedIn>
               <ToggleFavoritesButton id={game.id} />
