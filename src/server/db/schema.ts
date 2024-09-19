@@ -34,7 +34,7 @@ export const notes = pgTable('n4_note', {
 })
 
 export const games = createTable('game', {
-  id: varchar('id').notNull(),
+  id: varchar('id').notNull().primaryKey(),
   noteId: integer('note_id').references(() => notes.id),
   createdAt: timestamp('created_at', { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
