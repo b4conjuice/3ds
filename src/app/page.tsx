@@ -62,44 +62,44 @@ async function GamesList({ games }: { games: Game[] }) {
     <ul className='divide-y divide-cb-dusty-blue'>
       {[...(favoriteGames ?? []), ...(otherGames ?? [])].map(game => (
         <li key={game.id} className='flex items-center py-4 first:pt-0'>
-          <span className='flex grow gap-3'>
-            <span>
-              {game.name} - {game.system}
-            </span>
+          <span className='grow'>
+            {game.name} - {game.system}
+          </span>
+          <span className='flex gap-3'>
             <SignedIn>
               <ToggleFavoritesButton id={game.id} />
             </SignedIn>
-          </span>
-          {gameToNoteMap[game.id] ? (
-            <Link href={`/${gameToNoteMap[game.id]}`}>
-              <PencilSquareIcon className='h-6 w-6 text-cb-pink hover:text-cb-pink/75' />
-            </Link>
-          ) : (
-            <form
-              action={async () => {
-                'use server'
-                const title = game.name
-                const body = ''
-                const text = `${title}\n\n${body}`
-                const newNote = {
-                  text,
-                  title,
-                  body,
-                }
-                const noteId = await saveNote(newNote)
-                const newGame = {
-                  id: game.id,
-                  noteId,
-                }
-                await saveGame(newGame)
-                redirect(`/${noteId}`)
-              }}
-            >
-              <button type='submit' className='flex items-center'>
+            {gameToNoteMap[game.id] ? (
+              <Link href={`/${gameToNoteMap[game.id]}`}>
                 <PencilSquareIcon className='h-6 w-6 text-cb-pink hover:text-cb-pink/75' />
-              </button>
-            </form>
-          )}
+              </Link>
+            ) : (
+              <form
+                action={async () => {
+                  'use server'
+                  const title = game.name
+                  const body = ''
+                  const text = `${title}\n\n${body}`
+                  const newNote = {
+                    text,
+                    title,
+                    body,
+                  }
+                  const noteId = await saveNote(newNote)
+                  const newGame = {
+                    id: game.id,
+                    noteId,
+                  }
+                  await saveGame(newGame)
+                  redirect(`/${noteId}`)
+                }}
+              >
+                <button type='submit' className='flex items-center'>
+                  <PencilSquareIcon className='h-6 w-6 text-cb-pink hover:text-cb-pink/75' />
+                </button>
+              </form>
+            )}
+          </span>
         </li>
       ))}
     </ul>
