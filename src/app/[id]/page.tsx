@@ -1,8 +1,19 @@
+import { auth } from '@clerk/nextjs/server'
+
 import { Main } from '@/components/ui'
 import Textarea from '@/app/_components/textarea'
 import { getNote } from '@/server/actions'
 
 export default async function NotePage({ params }: { params: { id: string } }) {
+  const user = auth()
+  if (!user.userId) {
+    return (
+      <Main className='container mx-auto flex max-w-screen-md flex-col px-4 md:px-0'>
+        <p>you must be logged in to view this note</p>
+      </Main>
+    )
+  }
+
   const note = await getNote(Number(params.id))
   if (!note) {
     return (
