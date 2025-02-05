@@ -85,6 +85,8 @@ async function GamesList({ games }: { games: Game[] }) {
                     text,
                     title,
                     body,
+                    list: [],
+                    tags: [],
                   }
                   const noteId = await saveNote(newNote)
                   const newGame = {
