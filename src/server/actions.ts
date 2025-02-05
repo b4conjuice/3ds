@@ -56,16 +56,22 @@ export async function getNote(noteId: number) {
   return note
 }
 
+const GAME_TAG = '🎮'
+
 export async function saveNote(note: Note) {
   const user = auth()
 
   if (!user.userId) throw new Error('unauthorized')
+
+  const tags = note?.tags ?? []
+  const newTags = tags.includes(GAME_TAG) ? tags : [...tags, GAME_TAG]
 
   const newNotes = await db
     .insert(notes)
     .values({
       ...note,
       author: user.userId,
+      tags: newTags,
     })
     .onConflictDoUpdate({
       target: notes.id,
@@ -73,6 +79,7 @@ export async function saveNote(note: Note) {
         text: note.text,
         title: note.title,
         body: note.body,
+        tags: newTags,
       },
     })
     .returning()
